@@ -1,0 +1,4 @@
+name = "machos-base"
+description = "Boot and login essentials, shell, accounts, package manager and HTTPS downloader"
+license = "GPL-3.0-only; third-party components retain their licenses"
+source = "https://github.com/Wmakes/MachOS"

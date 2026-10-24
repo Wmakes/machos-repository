@@ -1,0 +1,4 @@
+name = "diskutils"
+description = "Disk, filesystem and mount utilities"
+license = "GPL-3.0-only; third-party components retain their licenses"
+source = "https://github.com/Wmakes/MachOS"

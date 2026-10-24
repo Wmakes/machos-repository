@@ -1,0 +1,4 @@
+name = "machos-kernel"
+description = "MachOS kernel and rescue initrd"
+license = "GPL-3.0-only; third-party components retain their licenses"
+source = "https://github.com/Wmakes/MachOS"

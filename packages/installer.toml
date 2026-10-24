@@ -1,0 +1,4 @@
+name = "installer"
+description = "MachOS disk installer"
+license = "GPL-3.0-only; third-party components retain their licenses"
+source = "https://github.com/Wmakes/MachOS"

@@ -1,0 +1,15 @@
+# GitHub release assets hold packages and immutable index revisions.
+# main holds the signed stable catalogue; package bytes never enter Git history.
+format = 1
+github = "Wmakes/machos-repository"
+branch = "main"
+channel = "stable"
+arch = "x86_64"
+public_key = "keys/official.pub"
+package_definitions = "packages"
+metadata_days = 30
+max_archive_bytes = 67108864
+max_unpacked_bytes = 134217728
+max_packages = 400
+# These packages must be present together for a bootable system upgrade.
+system_packages = ["machos-base", "machos-kernel", "machos-boot"]

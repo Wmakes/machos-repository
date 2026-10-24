@@ -1,0 +1,4 @@
+name = "accounts"
+description = "Account creation and administrator management"
+license = "GPL-3.0-only; third-party components retain their licenses"
+source = "https://github.com/Wmakes/MachOS"

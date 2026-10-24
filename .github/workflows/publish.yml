@@ -1,0 +1,51 @@
+name: Publish stable packages
+on:
+  workflow_dispatch:
+    inputs:
+      os_version:
+        description: Stable MachOS version, such as 0.9.3
+        required: true
+        type: string
+      revision:
+        description: Signed stable catalogue revision
+        required: true
+        type: string
+permissions:
+  contents: write
+concurrency:
+  group: publish-stable
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+      - run: sudo apt-get update && sudo apt-get install -y minisign
+      - run: python3 -m unittest discover -s tests -v
+      - name: Download the signed submission
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OS_VERSION: ${{ inputs.os_version }}
+          REVISION: ${{ inputs.revision }}
+        run: |
+          python3 - <<'PY'
+          import os, re, subprocess
+          version, revision = os.environ['OS_VERSION'], os.environ['REVISION']
+          if not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', version):
+              raise SystemExit('Invalid OS version')
+          if not re.fullmatch(r'[1-9][0-9]{0,8}', revision):
+              raise SystemExit('Invalid catalogue revision')
+          subprocess.run(['gh', 'release', 'download', 'v' + version, '--repo', os.environ['GITHUB_REPOSITORY'],
+                          '--pattern', 'submission-r' + revision + '.tar', '--dir', 'out/submission'], check=True)
+          PY
+      - name: Verify and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVISION: ${{ inputs.revision }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          python3 tools/repository.py publish "out/submission/submission-r${REVISION}.tar"
