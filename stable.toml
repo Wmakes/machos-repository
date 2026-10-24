@@ -1,0 +1,15 @@
+format = 1
+channel = "stable"
+published = "2026-10-24T12:06:35Z"
+expires = "2026-11-23T12:06:35Z"
+revision = 1
+previous_sha256 = "0000000000000000000000000000000000000000000000000000000000000000"
+latest_os = "0.9.3"
+
+[[releases]]
+os_version = "0.9.3"
+revision = 1
+size = 6889
+sha256 = "810b697d63806d375851e7b380615edcc42e6095dd99c99918b9c5fb97997efa"
+url = "https://github.com/Wmakes/machos-repository/releases/download/v0.9.3/index-r1.toml"
+signature_url = "https://github.com/Wmakes/machos-repository/releases/download/v0.9.3/index-r1.toml.sig"
