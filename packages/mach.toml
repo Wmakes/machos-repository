@@ -1,0 +1,4 @@
+name = "mach"
+description = "Mach programming language compiler for building native MachOS programs"
+license = "MIT"
+source = "https://github.com/Wmakes/mach"
