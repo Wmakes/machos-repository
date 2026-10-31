@@ -1,9 +1,9 @@
 format = 1
 channel = "stable"
-published = "2026-10-30T22:47:38Z"
-expires = "2026-11-29T22:47:38Z"
-revision = 4
-previous_sha256 = "5839a3ca74ecb13322d7547d3feaa45af974eb7a96d8a2f50a79f549260de4ea"
+published = "2026-10-31T15:18:07Z"
+expires = "2026-11-30T15:18:07Z"
+revision = 5
+previous_sha256 = "67778d8656ce3f5b8050a31fde2fa06c8e802591a79bb02ad0162870d7eef640"
 latest_os = "0.9.4"
 
 [[releases]]
@@ -16,8 +16,8 @@ signature_url = "https://github.com/Wmakes/machos-repository/releases/download/v
 
 [[releases]]
 os_version = "0.9.4"
-revision = 2
-size = 8360
-sha256 = "b40696c39823f76577f0c6382d58e3c6e8c05c90991e04627510c977ff0d7a83"
-url = "https://github.com/Wmakes/machos-repository/releases/download/v0.9.4/index-r2.toml"
-signature_url = "https://github.com/Wmakes/machos-repository/releases/download/v0.9.4/index-r2.toml.sig"
+revision = 3
+size = 8992
+sha256 = "80f2e7744d35a214844b0c15ca6d63cf62642ae13d6953ff03e79ef7261305bb"
+url = "https://github.com/Wmakes/machos-repository/releases/download/v0.9.4/index-r3.toml"
+signature_url = "https://github.com/Wmakes/machos-repository/releases/download/v0.9.4/index-r3.toml.sig"
