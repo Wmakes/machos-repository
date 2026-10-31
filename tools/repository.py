@@ -19,7 +19,7 @@ import zlib
 ROOT = Path(__file__).resolve().parents[1]
 NAME = re.compile(r"[a-z][a-z0-9_-]{0,62}\Z")
 DIGEST = re.compile(r"[0-9a-f]{64}\Z")
-VERSION = re.compile(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z.-]+))?(?:\+([0-9A-Za-z.-]+))?\Z")
+VERSION = re.compile(r"((?:0|[1-9][0-9]*)(?:\.(?:0|[1-9][0-9]*)){2,})(?:-([0-9A-Za-z.-]+))?(?:\+([0-9A-Za-z.-]+))?\Z")
 ZERO = "0" * 64
 
 
@@ -30,16 +30,19 @@ def require(condition, message):
 
 def version(value):
     match = VERSION.fullmatch(value) if isinstance(value, str) else None
-    require(match is not None, "invalid semantic version")
-    require(all(int(match[i]) < 2**64 for i in (1, 2, 3)), "version integer overflow")
-    pre = match[4]
+    require(match is not None, "invalid package version")
+    core = tuple(int(part) for part in match[1].split("."))
+    require(all(part < 2**64 for part in core), "version integer overflow")
+    while len(core) > 3 and core[-1] == 0:
+        core = core[:-1]
+    pre = match[2]
     for part in (pre or "").split(".") if pre is not None else []:
         require(part and not (part.isdecimal() and len(part) > 1 and part[0] == "0"), "invalid prerelease")
-    if match[5] is not None:
-        require(all(match[5].split(".")), "empty build identifier")
+    if match[3] is not None:
+        require(all(match[3].split(".")), "empty build identifier")
     # Numeric prerelease identifiers sort below text; a final release sorts last.
     suffix = (1,) if pre is None else (0, tuple((0, int(p)) if p.isdecimal() else (1, p) for p in pre.split(".")))
-    return tuple(int(match[i]) for i in (1, 2, 3)) + (suffix,)
+    return core, suffix
 
 
 def text(value):
@@ -257,7 +260,8 @@ def old_catalogue(path, cfg):
 
 def prepare(source, dest, os_version, cfg, previous, now=None):
     version(os_version)
-    require(not VERSION.fullmatch(os_version)[4] and not VERSION.fullmatch(os_version)[5], "OS release must be stable X.Y.Z")
+    parsed_os = VERSION.fullmatch(os_version)
+    require(parsed_os[2] is None and parsed_os[3] is None, "OS release must be a stable dotted numeric version")
     require(not dest.exists(), "output directory already exists")
     now = now or dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
     old = old_catalogue(previous, cfg)

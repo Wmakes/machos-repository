@@ -251,7 +251,11 @@ class RepositoryTests(unittest.TestCase):
     def test_semver_numeric_prereleases_and_bounds(self):
         self.assertLess(r.version("1.0.0-2"), r.version("1.0.0-10"))
         self.assertLess(r.version("1.0.0-alpha"), r.version("1.0.0"))
-        for value in ("1.0", "01.0.0", "1.0.0-01", "1.0.0-a..b", "1.0.0+x..y", "18446744073709551616.0.0"):
+        self.assertLess(r.version("0.9.4"), r.version("0.9.4.1"))
+        self.assertLess(r.version("0.9.4.1.1"), r.version("0.9.4.1.2"))
+        self.assertEqual(r.version("0.9.4"), r.version("0.9.4.0.0"))
+        self.assertLess(r.version("0.9.4.1-alpha"), r.version("0.9.4.1"))
+        for value in ("1.0", "01.0.0", "1.0.0.01", "1.0.0-01", "1.0.0-a..b", "1.0.0+x..y", "18446744073709551616.0.0"):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 r.version(value)
 
